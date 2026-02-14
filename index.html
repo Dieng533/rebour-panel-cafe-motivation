@@ -1,203 +1,353 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
-<meta charset="UTF-8">
-<title>GO'UP – Minuteur Café Motivation</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <title>GO'UP – Café Motivation Ultimate</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<!-- Bootstrap + Icons -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
-<style>
-:root {
-    --orange-goup: #e06a16;
-    --orange-goup-light: #f18c42;
-    --orange-goup-dark: #c55a12;
-    --bleu-nuit-goup: #1a1a26;
-    --bleu-nuit-light: #2a2a3a;
-    --bleu-nuit-dark: #121218;
-    --blanc-creme: #f8f9fa;
-}
+    <style>
+        :root {
+            --orange: #e06a16;
+            --orange-dark: #c55a12;
+            --blue-mod: #007bff;
+            --dark: #121218;
+            --light: #f8f9fa;
+        }
 
-body {
-    background: radial-gradient(circle at top, var(--bleu-nuit-light), var(--bleu-nuit-dark));
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: var(--blanc-creme);
-}
+        body {
+            background: radial-gradient(circle at top, #2a2a3a, #121218);
+            color: white;
+            padding: 40px 20px;
+            overflow-x: hidden;
+            transition: .5s;
+        }
 
-.panel-card {
-    background: linear-gradient(145deg, var(--bleu-nuit-goup), var(--bleu-nuit-dark));
-    border-radius: 30px;
-    padding: 30px;
-    max-width: 650px;
-    width: 100%;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.6);
-}
+        body.flash {
+            background: var(--orange);
+        }
 
-.logo {
-    max-height: 70px;
-    margin-bottom: 15px;
-}
+        h2 {
+            font-weight: 900;
+            text-shadow: 0 0 15px var(--orange);
+        }
 
-.time-box {
-    background: var(--blanc-creme);
-    color: var(--bleu-nuit-goup);
-    border-radius: 20px;
-    padding: 25px;
-    font-size: 4rem;
-    font-weight: 900;
-    text-align: center;
-}
+        .section-title {
+            margin-top: 50px;
+            letter-spacing: 3px;
+            color: var(--orange);
+        }
 
-.label {
-    text-transform: uppercase;
-    font-size: 0.85rem;
-    letter-spacing: 2px;
-    color: var(--orange-goup-light);
-    margin-top: 8px;
-}
+        .profile-card {
+            cursor: pointer;
+            transition: .4s;
+        }
 
-.warning {
-    background: var(--orange-goup) !important;
-    color: white !important;
-    animation: pulse 1s infinite;
-}
+        .profile-card img {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid transparent;
+            transition: .4s;
+        }
 
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.08); }
-    100% { transform: scale(1); }
-}
+        .profile-card:hover img {
+            transform: scale(1.1);
+        }
 
-.btn-icon {
-    font-size: 1.6rem;
-    border-radius: 50%;
-    width: 65px;
-    height: 65px;
-}
+        .profile-card.active img {
+            border-color: var(--orange);
+            box-shadow: 0 0 35px var(--orange);
+        }
 
-.btn-goup {
-    background: linear-gradient(135deg, var(--orange-goup), var(--orange-goup-dark));
-    color: white;
-    border: none;
-}
+        .profile-card.moderator.active img {
+            border-color: var(--blue-mod);
+            box-shadow: 0 0 35px var(--blue-mod);
+        }
 
-.btn-goup:hover { opacity: 0.9; }
-</style>
+        .timer-box {
+            margin: 60px 0;
+            padding: 50px;
+            border-radius: 25px;
+            background: linear-gradient(145deg, #2a2a3a, #121218);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, .6);
+            animation: fadeIn .8s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .time-display {
+            font-size: 7rem;
+            font-weight: 900;
+            background: white;
+            color: black;
+            padding: 30px;
+            border-radius: 20px;
+            transition: .3s;
+        }
+
+        .warning {
+            background: var(--orange) !important;
+            color: white !important;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .progress {
+            height: 15px;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+
+        .progress-bar {
+            transition: width 1s linear;
+        }
+
+        .btn-goup {
+            background: linear-gradient(135deg, var(--orange), var(--orange-dark));
+            border: none;
+            color: white;
+        }
+
+        .btn-add {
+            background: #28a745;
+            border: none;
+            color: white;
+        }
+
+        .badge-mod {
+            background: var(--blue-mod);
+        }
+
+        @media(max-width:768px) {
+            .time-display {
+                font-size: 4rem;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-<div class="panel-card text-center">
+    <div class="container text-center">
 
-    <!-- LOGO -->
-    <img src="logo.png" class="logo img-fluid" alt="GO'UP">
+        <img src="logo.png" style="max-height:80px;" class="mb-3">
+        <h2>🎤 Café Motivation – Changer Nos Comportements, Changer la Société.</h2>
 
-    <h3 class="mb-4">🎤 Café Motivation – Minuteur Officiel</h3>
+        <h4 class="section-title">PANÉLISTES – 7 MINUTES</h4>
 
-    <!-- TEMPS -->
-    <div class="row g-3 mb-4">
-        <div class="col-6">
-            <div id="minutes" class="time-box">07</div>
-            <div class="label">Minutes</div>
+        <div class="row g-4 justify-content-center">
+
+            <div class="col-md-2 col-6 profile-card moderator"
+                onclick="selectSpeaker(this,'Abdoul Aziz Cisse','Modérateur – CEO GO’UP',7,true)">
+                <img src="images/aziz.jpg">
+                <h6 class="mt-2 text-info">Abdoul Aziz (Modérateur)</h6>
+            </div>
+
+            <div class="col-md-2 col-6 profile-card"
+                onclick="selectSpeaker(this,'Aminata Diagne','Regard et pratiques autour de la femme...',7,false)">
+                <img src="images/aminata.jpg">
+                <h6 class="mt-2">Aminata Diagne</h6>
+            </div>
+
+            <div class="col-md-2 col-6 profile-card"
+                onclick="selectSpeaker(this,'Mouhamadou Séck','Société sénégalaise : cohésion...',7,false)">
+                <img src="images/mouhamadou.jpg">
+                <h6 class="mt-2">Mouhamadou Séck</h6>
+            </div>
+
+            <div class="col-md-2 col-6 profile-card"
+                onclick="selectSpeaker(this,'Fama Sarr','Femme sénégalaise : tradition...',7,false)">
+                <img src="images/fama.jpg">
+                <h6 class="mt-2">Fama Sarr</h6>
+            </div>
+
+            <div class="col-md-2 col-6 profile-card"
+                onclick="selectSpeaker(this,'Ibrahima Ndiaye','Engagement communautaire...',7,false)">
+                <img src="images/ibrahima.jpg">
+                <h6 class="mt-2">Ibrahima Ndiaye</h6>
+            </div>
+
         </div>
-        <div class="col-6">
-            <div id="seconds" class="time-box">00</div>
-            <div class="label">Secondes</div>
+
+        <div class="timer-box">
+
+            <h3 id="speakerName">Sélectionnez un intervenant</h3>
+            <p id="speakerTopic" class="text-warning fs-5"></p>
+            <span id="badgeTime"></span>
+
+            <div class="time-display my-4">
+                <span id="minutes">07</span>:<span id="seconds">00</span>
+            </div>
+
+            <div class="progress">
+                <div id="progressBar" class="progress-bar bg-success" style="width:100%"></div>
+            </div>
+
+            <div class="d-flex justify-content-center gap-3 mt-4">
+                <button class="btn btn-goup" onclick="toggleTimer()">
+                    <i class="bi bi-play-fill"></i>
+                </button>
+                <button class="btn btn-outline-light" onclick="resetTimer()">
+                    <i class="bi bi-arrow-counterclockwise"></i>
+                </button>
+                <button class="btn btn-add" onclick="OneMinute()">
+                    Intervenants
+                </button>
+            </div>
+
         </div>
+
+        <h4 class="section-title">PITCH UP'SKILLS – 2 MINUTES</h4>
+
+        <div class="row g-4 justify-content-center">
+
+            <div class="col-md-2 col-6 profile-card"
+                onclick="selectSpeaker(this,'Ami Seck','Projet : Taxawal Garape',2,false)">
+                <img src="images/ami.jpg">
+                <h6 class="mt-2">Ami Seck</h6>
+            </div>
+
+            <div class="col-md-2 col-6 profile-card"
+                onclick="selectSpeaker(this,'Mame Seye Cisse','Projet : Nangoul Ma',2,false)">
+                <img src="images/mame.jpg">
+                <h6 class="mt-2">Mame Seye Cisse</h6>
+            </div>
+
+            <div class="col-md-2 col-6 profile-card"
+                onclick="selectSpeaker(this,'Fatou Thiam','Projet : Jami Jiguen',2,false)">
+                <img src="images/fatou.jpg">
+                <h6 class="mt-2">Fatou Thiam</h6>
+            </div>
+
+        </div>
+
     </div>
 
-    <!-- PRÉRÉGLAGES -->
-    <div class="d-flex justify-content-center gap-2 mb-4">
-        <button class="btn btn-outline-light" onclick="setTime(7)">🕖 7 min</button>
-        <button class="btn btn-outline-light" onclick="setTime(1)">⏱️ 1 min</button>
-        <button class="btn btn-outline-light" onclick="setTime(2)">👩‍🎤 2 min</button>
-    </div>
+    <audio id="startSound" src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg"></audio>
+    <audio id="endSound" src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg"></audio>
 
-    <!-- CONTROLES -->
-    <div class="d-flex justify-content-center gap-4">
-        <button id="startBtn" class="btn btn-goup btn-icon">
-            <i class="bi bi-play-fill"></i>
-        </button>
+    <script>
+        let totalSeconds = 420;
+        let remaining = totalSeconds;
+        let timer = null;
 
-        <button id="resetBtn" class="btn btn-outline-light btn-icon">
-            <i class="bi bi-arrow-counterclockwise"></i>
-        </button>
-    </div>
+        function selectSpeaker(card, name, topic, minutes, isModerator) {
 
-</div>
+            $(".profile-card").removeClass("active");
+            $(card).addClass("active");
 
-<!-- SONS -->
-<audio id="warningSound" src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg"></audio>
-<audio id="endSound" src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg"></audio>
+            $("#speakerName").text(name);
+            $("#speakerTopic").text(topic);
 
-<script>
-let totalSeconds = 420;
-let remaining = totalSeconds;
-let timer = null;
+            if (isModerator) {
+                $("#badgeTime").html('<span class="badge badge-mod">MODÉRATEUR</span>');
+            } else {
+                $("#badgeTime").html('<span class="badge bg-warning text-dark">' + minutes + ' minutes</span>');
+            }
 
-function updateUI() {
-    let m = Math.floor(remaining / 60);
-    let s = remaining % 60;
-    $("#minutes").text(String(m).padStart(2,'0'));
-    $("#seconds").text(String(s).padStart(2,'0'));
+            totalSeconds = minutes * 60;
+            resetTimer();
+            document.getElementById("startSound").play();
+            startTimer();
+        }
 
-    if (remaining <= 30) $(".time-box").addClass("warning");
-    else $(".time-box").removeClass("warning");
-}
+        function updateUI() {
 
-function setTime(minutes) {
-    clearInterval(timer);
-    timer = null;
-    totalSeconds = minutes * 60;
-    remaining = totalSeconds;
-    updateUI();
-}
+            let m = Math.floor(remaining / 60);
+            let s = remaining % 60;
 
-function toggleTimer() {
-    if (timer) {
-        clearInterval(timer);
-        timer = null;
-        return;
-    }
+            $("#minutes").text(String(m).padStart(2, '0'));
+            $("#seconds").text(String(s).padStart(2, '0'));
 
-    timer = setInterval(() => {
-        remaining--;
-        updateUI();
+            let percent = (remaining / totalSeconds) * 100;
+            $("#progressBar").css("width", percent + "%");
 
-        if (remaining <= 30 && remaining > 0)
-            document.getElementById("warningSound").play();
+            if (percent < 30) {
+                $("#progressBar").removeClass("bg-success").addClass("bg-danger");
+            }
 
-        if (remaining === 0)
-            document.getElementById("endSound").play();
+            if (remaining <= 30) {
+                $(".time-display").addClass("warning");
+            }
 
-        if (remaining <= 0) {
+            if (remaining <= 0) {
+                $("body").addClass("flash");
+                setTimeout(() => { $("body").removeClass("flash"); }, 800);
+                document.getElementById("endSound").play();
+                clearInterval(timer);
+            }
+        }
+
+        function startTimer() {
+            clearInterval(timer);
+            timer = setInterval(() => {
+                remaining--;
+                updateUI();
+            }, 1000);
+        }
+
+        function toggleTimer() {
+            if (timer) {
+                clearInterval(timer);
+                timer = null;
+            } else {
+                startTimer();
+            }
+        }
+
+        function resetTimer() {
             clearInterval(timer);
             timer = null;
+            remaining = totalSeconds;
+            $(".time-display").removeClass("warning");
+            $("#progressBar").removeClass("bg-danger").addClass("bg-success");
+            updateUI();
         }
-    }, 1000);
-}
 
-$("#startBtn").click(toggleTimer);
-$("#resetBtn").click(() => setTime(totalSeconds / 60));
+        function OneMinute() {
+            remaining = 60;
+            totalSeconds = 60;
+            updateUI();
+        }
 
-$(document).keydown(e => {
-    if (e.code === "Space") {
-        e.preventDefault();
-        toggleTimer();
-    }
-    if (e.key.toLowerCase() === "r") {
-        setTime(totalSeconds / 60);
-    }
-});
+        $(document).keydown(e => {
+            if (e.code === "Space") { e.preventDefault(); toggleTimer(); }
+            if (e.key.toLowerCase() === "r") { resetTimer(); }
+        });
 
-updateUI();
-</script>
+        updateUI();
+    </script>
 
 </body>
+
 </html>
